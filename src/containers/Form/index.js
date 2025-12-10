@@ -16,10 +16,6 @@ const Form = ({ onSuccess, onError }) => {
       await mockContactApi();
       setSending(false);
       onSuccess();
-      const successMessageElement = document.getElementById("success-message");
-      if (successMessageElement) {
-        successMessageElement.textContent = "Message envoyé !";
-      }
     } catch (err) {
       setSending(false);
       onError(err);
