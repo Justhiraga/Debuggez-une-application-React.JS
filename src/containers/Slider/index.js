@@ -16,7 +16,7 @@ const Slider = () => {
     setIndex(newcard);
     clearTimeout(ctimeout);
     const timeout = setTimeout(
-      () => setIndex(index < byDateDesc.length - 1 ? index + 1 : 0),
+      () => setIndex(Array.isArray(byDateDesc) && index < byDateDesc.length - 1 ? index + 1 : 0),
       5000
     );
    setCtimeout(timeout);
@@ -24,12 +24,16 @@ const Slider = () => {
 
   useEffect(() => {
     nextCard(index);
+  },[]);
+
+  useEffect(() => {
+    nextCard(index);
   }, [index]);
 
   return (
     <div className="SlideCardList">
-      {byDateDesc?.map((event, idx) => (
-        <div key={event.id || idx}>
+    {byDateDesc?.map((event, idx) => (
+      <div key={event.id || idx}>
           <div
             className={`SlideCard SlideCard--${
               index === idx ? "display" : "hide"
@@ -51,7 +55,7 @@ const Slider = () => {
                   type="radio"
                   name="radio-button"
                   checked={index === radioIdx}
-                  onClick={() => { nextCard(radioIdx); }}
+                  onChange={() => { nextCard(radioIdx); }}
                 /> 
               ))}
             </div>
