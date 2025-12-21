@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import Home from "./index";
 
+
 describe("When Form is created", () => {
   it("a list of fields card is displayed", async () => {
     render(<Home />);
@@ -37,7 +38,9 @@ describe("When a page is created", () => {
   it("a footer is displayed", () => {
     // to implement
   })
-  it("an event card, with the last event, is displayed", () => {
-    // to implement
+  it("an event card, with the last event, is displayed", async () => {
+    render(<Home />);
+    const lastEventsection = await screen.getByText("Notre derniére prestation");
+    expect(lastEventsection).toBeInTheDocument();
   })
 });
