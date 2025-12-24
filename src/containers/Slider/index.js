@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useData } from "../../contexts/DataContext";
 import { getMonth } from "../../helpers/Date";
 
@@ -7,24 +7,26 @@ import "./style.scss";
 const Slider = () => {
   const { data } = useData();
   const [index, setIndex] = useState(0);
-  const [ctimeout, setCtimeout] = useState();
+  const timeoutref = useRef(null);
   const byDateDesc = data?.focus.sort((evtA, evtB) =>
     new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
   );
 
-  const nextCard = (newcard) => {
-    setIndex(newcard);
-    clearTimeout(ctimeout);
-    const timeout = setTimeout(
+  const nextCard = () => {
+    timeoutref.current = setTimeout(
       () => setIndex(Array.isArray(byDateDesc) && index < byDateDesc.length - 1 ? index + 1 : 0),
       5000
     );
-   setCtimeout(timeout);
   };
 
   useEffect(() => {
-    nextCard(index);
-  }, [index]);
+    nextCard();
+    return () => {
+      if (timeoutref.current) {
+        clearTimeout(timeoutref.current);
+      }
+    };
+  });
 
   return (
   <div className="SlideCardList">
@@ -52,7 +54,7 @@ const Slider = () => {
                   type="radio"
                   name="radio-button"
                   checked={index === radioIdx}
-                  onChange={() => { nextCard(radioIdx); }}
+                  onChange={() => {setIndex(radioIdx);}}
                 /> 
               ))}
             </div>
