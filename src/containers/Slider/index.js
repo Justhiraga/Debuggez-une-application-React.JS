@@ -24,10 +24,6 @@ const Slider = () => {
 
   useEffect(() => {
     nextCard(index);
-  },[]);
-
-  useEffect(() => {
-    nextCard(index);
   }, [index]);
 
   return (
